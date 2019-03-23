@@ -15,3 +15,12 @@ export const reducerMonth = (state = '', action) => {
             return state;
     }
 }
+
+export const reducerData = (state = '', action) => {
+    switch(action.type) {
+        case actionType.UPDATE_DATA:
+            return action.payload;
+        default:
+            return state;
+    }
+}

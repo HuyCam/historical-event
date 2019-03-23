@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux';
 
-import { reducerDate, reducerMonth } from './reducer-datenmonth';
+import { reducerDate, reducerMonth, reducerData } from './reducer-datenmonth';
 
 const Reducer = combineReducers({
-    date: reducerDate,
-    month: reducerMonth
+    day: reducerDate,
+    month: reducerMonth,
+    data: reducerData
 });
 
 export default Reducer;

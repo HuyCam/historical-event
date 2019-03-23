@@ -1,0 +1,27 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+class Fact extends Component {
+    render() {
+        String.prototype.replaceAt=function(index, replacement) {
+            return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
+        }
+        const text = this.props.data.text;
+        if (this.props.data) {
+            return <div className="fact">
+            <p className="fact-text">{text.replaceAt(0, text.charAt(0).toUpperCase())} in {this.props.data.year}</p>
+            </div>
+        } else {
+            return <div></div>
+        } 
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        data: state.data,
+        day: state.day
+    }
+}
+
+export default connect(mapStateToProps)(Fact);

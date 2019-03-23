@@ -1,44 +1,61 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { updateDate, updateMonth } from '../actions/actions';
+import { updateDate, updateMonth, updateData } from '../actions/actions';
 
 class DateForm extends Component {
     constructor(props) {
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
-
-        this.inputDate = React.createRef();
-        this.inputMonth = React.createRef();
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleInputChange() {
-        if (this.inputDate.current) {
-            if (this.inputDate.current.value !== this.props.date) {
-                console.log('only update Date');
-                this.props.updateDate(this.inputDate.current.value);
+    handleInputChange(event) {
+        const type = event.target? event.target.name : null;
+        const input = event.target? event.target.value : null;
+        
+        if (input && type === 'day') {
+            if (input !== this.props.day) {
+                this.props.updateDate(input);
             }
         } 
 
-        if (this.inputMonth.current) {
-            if (this.inputMonth.current.value !== this.props.month ) {
-                console.log('only update Month');
-                this.props.updateMonth(this.inputMonth.current.value);
+        if (input && type === 'month') {
+            if (input !== this.props.month ) {
+                this.props.updateMonth(input);
             }
         }
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
         
+        const url = `https://numbersapi.p.rapidapi.com/${this.props.day}/${this.props.month}/date?fragment=true&json=true`
+        const dataPromise = fetch(url, {
+            method: "GET", // *GET, POST, PUT, DELETE, etc.
+            mode: "cors", // no-cors, cors, *same-origin
+            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+                "Content-Type": "application/json",
+                "X-RapidAPI-Key": "xXQpmMjqpImshQiKJt0QH9F8GT4Ip1k9csDjsnJoEjI0CnEFdE"
+            },
+            redirect: "follow", // manual, *follow, error
+            referrer: "no-referrer", // no-referrer, *client
+        })
+        .then(response => response.json())
+        .then(data => this.props.updateData(data));
+
     }
 
     render() {
-        console.log(this.props);
-        
         return (
-            <form>
+            <form onSubmit={this.handleSubmit}>
                 <label>
-                date: <input type="number" name="date" onChange={this.handleInputChange} ref={this.inputDate}/>
+                day: <input type="number" name="day" onChange={this.handleInputChange} />
                 </label>
                 <label>
-                month: <input type="number" name="month" onChange={this.handleInputChange} ref={this.inputMonth}/>
+                month: <input type="number" name="month" onChange={this.handleInputChange} />
                 </label>
                 <input type="submit" />
             </form>
@@ -48,15 +65,16 @@ class DateForm extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        date: state.date,
-        month: state.month
+        day: state.day,
+        month: state.month,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         updateDate: bindActionCreators(updateDate, dispatch),
-        updateMonth: bindActionCreators(updateMonth, dispatch)
+        updateMonth: bindActionCreators(updateMonth, dispatch),
+        updateData: bindActionCreators(updateData, dispatch)
     }
 }
 

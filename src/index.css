@@ -12,3 +12,41 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.app {
+  width: 80%;
+  margin: 5em auto;
+  text-align: center;
+}
+
+.fact {
+  margin: 2em 0;
+  background-color: #c3d7f7;
+  font-size: 24px;
+  font-weight: bold;
+  animation: fadein 1.5s ease-in forwards;
+}
+
+.fact .fact-text {
+  animation: fadein 1.5s ease-in forwards;
+}
+
+@keyframes fadein{
+  0% {
+    opacity: .1;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes {
+  0% {
+    opacity: .1;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
