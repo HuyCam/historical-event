@@ -6,6 +6,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #fce4b8;
 }
 
 code {
@@ -25,10 +26,24 @@ code {
   font-size: 24px;
   font-weight: bold;
   animation: fadein 1.5s ease-in forwards;
+  border-radius: 10px;
 }
 
 .fact .fact-text {
   animation: fadein 1.5s ease-in forwards;
+  padding: 3em 2em;
+}
+
+.btn {
+  background: #10ea38;
+  padding: .5em 1em;
+  border-radius: 5px;
+  margin-left: .5em;
+}
+
+input {
+  padding: .5em 1em;
+  border-radius: 5px;
 }
 
 @keyframes fadein{

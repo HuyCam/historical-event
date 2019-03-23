@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { updateDate, updateMonth, updateData } from '../actions/actions';
+import { updateDate, updateMonth, updateData, updateDisplayingFact } from '../actions/actions';
+
 
 class DateForm extends Component {
     constructor(props) {
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
     }
 
     handleInputChange(event) {
@@ -29,7 +31,6 @@ class DateForm extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        
         const url = `https://numbersapi.p.rapidapi.com/${this.props.day}/${this.props.month}/date?fragment=true&json=true`
         const dataPromise = fetch(url, {
             method: "GET", // *GET, POST, PUT, DELETE, etc.
@@ -44,7 +45,10 @@ class DateForm extends Component {
             referrer: "no-referrer", // no-referrer, *client
         })
         .then(response => response.json())
-        .then(data => this.props.updateData(data));
+        .then(data => {
+            this.props.updateData(data)
+            this.props.updateDisplayingFact(this.props.displayingFact);
+        });
 
     }
 
@@ -57,7 +61,7 @@ class DateForm extends Component {
                 <label>
                 month: <input type="number" name="month" onChange={this.handleInputChange} />
                 </label>
-                <input type="submit" />
+                <input type="submit" className="btn" value="Find Event"/>
             </form>
         );
     }
@@ -67,6 +71,7 @@ const mapStateToProps = (state) => {
     return {
         day: state.day,
         month: state.month,
+        displayingFact: state.displayingFact
     }
 }
 
@@ -74,7 +79,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         updateDate: bindActionCreators(updateDate, dispatch),
         updateMonth: bindActionCreators(updateMonth, dispatch),
-        updateData: bindActionCreators(updateData, dispatch)
+        updateData: bindActionCreators(updateData, dispatch),
+        updateDisplayingFact: bindActionCreators(updateDisplayingFact, dispatch)
     }
 }
 

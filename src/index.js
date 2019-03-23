@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 
 import Reducer from './reducers/reducer';
 
+
 ReactDOM.render(<Provider store={createStore(Reducer)}><App /></Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

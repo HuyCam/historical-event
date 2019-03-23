@@ -23,9 +23,14 @@ export const updateMonth = month => {
 
 
 export const updateData = data => {
-    console.log('data', data);
     return {
         type: UPDATE_DATA,
         payload: data
+    }
+}
+
+export const updateDisplayingFact = id => {
+    return {
+        type: id
     }
 }

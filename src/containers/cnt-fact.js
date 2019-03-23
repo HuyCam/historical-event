@@ -6,10 +6,11 @@ class Fact extends Component {
         String.prototype.replaceAt=function(index, replacement) {
             return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
         }
+
         const text = this.props.data.text;
-        if (this.props.data) {
+        if (this.props.data && this.props.displayingFact === this.props.id) {
             return <div className="fact">
-            <p className="fact-text">{text.replaceAt(0, text.charAt(0).toUpperCase())} in {this.props.data.year}</p>
+            <p className="fact-text">{text.replaceAt(0, text.charAt(0).toUpperCase())} in  {this.props.data.year}</p>
             </div>
         } else {
             return <div></div>
@@ -20,7 +21,7 @@ class Fact extends Component {
 const mapStateToProps = state => {
     return {
         data: state.data,
-        day: state.day
+        displayingFact: state.displayingFact
     }
 }
 
