@@ -7,8 +7,12 @@ import { updateDate, updateMonth, updateData, updateDisplayingFact } from '../ac
 class DateForm extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            error: ''
+        }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.checkError = this.checkError.bind(this);
 
     }
 
@@ -17,20 +21,24 @@ class DateForm extends Component {
         const input = event.target? event.target.value : null;
         
         if (input && type === 'day') {
-            if (input !== this.props.day) {
-                this.props.updateDate(input);
-            }
+            this.checkError(input);
+           this.props.updateDate(input);
         } 
 
         if (input && type === 'month') {
-            if (input !== this.props.month ) {
-                this.props.updateMonth(input);
-            }
+            this.checkError(this.state.day,input);
+            this.props.updateMonth(input);
         }
     }
 
     handleSubmit(event) {
         event.preventDefault();
+
+        // if there is error in user input don't fetch data
+        if (this.state.error) {
+            return;
+        }
+
         const url = `https://numbersapi.p.rapidapi.com/${this.props.day}/${this.props.month}/date?fragment=true&json=true`
         const dataPromise = fetch(url, {
             method: "GET", // *GET, POST, PUT, DELETE, etc.
@@ -52,16 +60,62 @@ class DateForm extends Component {
 
     }
 
+    // inform user that the input is invalid
+    checkError(day = this.props.day, month = this.props.month ) {
+        const month31days = [1,3,5,7,8,10,12];
+        //const month30days = [4,6,9,11];
+        let error = {
+            isError: false,
+            errorText: ''
+        }
+        // check day input: 1) if this month is Feb => check Feb input 2) else check regular day input range [1-31]
+        if (month !== '') {
+            if (parseInt(month) === 2) {
+                if (parseInt(day) > 29 || parseInt(day) < 1) {
+                    error.isError = true;
+                    error.errorText += ' Input day is out of range.';
+                }
+            } else {
+                if (month31days.find(mon => mon === parseInt(month))) {
+                    if (parseInt(day) > 31 || parseInt(day) < 1) {
+                        error.isError = true;
+                        error.errorText += ' Input day is out of range.';
+                    }
+                } else {
+                    if (parseInt(day) > 30 || parseInt(day) < 1) {
+                        error.isError = true;
+                        error.errorText += ' Input days is out of range.';
+                    }
+                }
+                
+            }
+        }
+        
+        // check month input range [1-12]
+        if (parseInt(month) > 12 || parseInt(month) < 1) {
+            error.isError = true;
+            error.errorText += 'Input month is out of range';
+        }
+
+        this.setState({
+            error: error.errorText
+        });
+
+    }
+
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
                 <label>
-                day: <input type="number" name="day" onChange={this.handleInputChange} />
+                <b>Day:</b> <input type="number" name="day" onChange={this.handleInputChange} />
                 </label>
                 <label>
-                month: <input type="number" name="month" onChange={this.handleInputChange} />
+                <b>Month:</b> <input type="number" name="month" onChange={this.handleInputChange} />
                 </label>
                 <input type="submit" className="btn" value="Find Event"/>
+                <div class="error-warning">
+                    <p>{this.state.error}</p>
+                </div>
             </form>
         );
     }
