@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updateDate, updateMonth, updateData, updateDisplayingFact } from '../actions/actions';
+import KEY from '../Api-key';
 
 
 class DateForm extends Component {
@@ -47,7 +48,7 @@ class DateForm extends Component {
             credentials: "same-origin", // include, *same-origin, omit
             headers: {
                 "Content-Type": "application/json",
-                "X-RapidAPI-Key": "xXQpmMjqpImshQiKJt0QH9F8GT4Ip1k9csDjsnJoEjI0CnEFdE"
+                "X-RapidAPI-Key": KEY
             },
             redirect: "follow", // manual, *follow, error
             referrer: "no-referrer", // no-referrer, *client
