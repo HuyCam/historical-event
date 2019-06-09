@@ -1,3 +1,6 @@
+## Purpose
+This app is created to show the historical event on the day that you enter in the input boxes.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
